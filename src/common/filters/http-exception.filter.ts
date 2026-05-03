@@ -15,12 +15,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
             ? exceptionResponse
             : exceptionResponse.message;
 
-        // Return the exact same shape as our Interceptor, but with data: null
         response
             .status(status)
             .json({
-                statusCode: status,
-                // If it's an array of validation errors, we join them into a single string
+                status: false,
                 message: Array.isArray(message) ? message.join(', ') : message,
                 data: null,
             });
