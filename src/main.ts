@@ -17,6 +17,7 @@ async function bootstrap() {
     .setTitle('Task Management API')
     .setDescription('The ultimate Task Management API')
     .setVersion('1.0')
+    .addTag('Auth')
     .addTag('Users')
     .addTag('Tasks')
     .build();
