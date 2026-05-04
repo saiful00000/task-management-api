@@ -10,8 +10,5 @@ export class CreateTaskDto {
     description?: string;
 
     @IsInt()
-    userId: number;
-
-    @IsInt()
     projectId: number;
 }
