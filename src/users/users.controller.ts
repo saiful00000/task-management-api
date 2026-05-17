@@ -1,9 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ResponseMessage } from '../common/decorators/response-message.decorator';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { RoleGuard } from 'src/auth/roles.guard';
+import { Roles } from 'src/common/decorators/roles.decorator';
+import { Role } from '@prisma/client';
 
 @ApiTags('Users')
 @Controller('users')
@@ -17,6 +21,9 @@ export class UsersController {
   }
 
   @Get()
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard, RoleGuard)
+  @Roles(Role.ADMIN)
   @ResponseMessage('Users retrieved successfully.')
   findAll() {
     return this.usersService.findAll();
@@ -35,6 +42,9 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard, RoleGuard)
+  @Roles(Role.ADMIN)
   @ResponseMessage('User deleted successfully.')
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);

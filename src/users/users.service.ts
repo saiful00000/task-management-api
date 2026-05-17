@@ -33,8 +33,18 @@ export class UsersService {
     return result;
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    return this.prisma.user.findMany(
+      {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          role: true,
+          createdAt: true,
+        }
+      }
+    );
   }
 
   findOne(id: number) {

@@ -11,15 +11,21 @@ datasource db {
   provider = "postgresql"
 }
 
-model User {
+model User {   
   id Int @id @default(autoincrement())
   email String @unique
   name String?
   password String
   tasks Task[]
   createdAt DateTime @default(now())
+  role Role @default(USER)
 }
 
+
+enum Role {
+  USER
+  ADMIN
+}
 
 model Project {
   id Int @id @default(autoincrement())
