@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
@@ -6,6 +6,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ResponseMessage } from '../common/decorators/response-message.decorator';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
+import { GetTaskFilterDto } from './dto/get-task-filter.dto';
 
 @ApiTags('Tasks')
 @ApiBearerAuth()
@@ -22,8 +23,11 @@ export class TasksController {
 
   @Get()
   @ResponseMessage('Tasks retrieved successfully.')
-  findAll(@CurrentUser() userId: number) {
-    return this.tasksService.findAll(userId);
+  findAll(
+    @Query() filterDto: GetTaskFilterDto,
+    @CurrentUser() userId: number
+  ) {
+    return this.tasksService.findAll(filterDto, userId);
   }
 
   @Get(':id')
