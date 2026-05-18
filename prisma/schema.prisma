@@ -16,6 +16,7 @@ model User {
   email String @unique
   name String?
   password String
+  projects Project[]
   tasks Task[]
   createdAt DateTime @default(now())
   role Role @default(USER)
@@ -32,6 +33,10 @@ model Project {
   name String
   description String?
   tasks Task[]
+
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+
   createdAt DateTime @default(now())
 }
 
